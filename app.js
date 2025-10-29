@@ -23,6 +23,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', apiRouter);
+// create middleware that logs to the console the user's ip address with every request that
+// hits the web server
+app.use(function (req, res, next) {
+    console.log("Connection made from: ", req.ip);
+    next();
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -39,12 +45,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
- // create middleware that logs to the console the user's ip address with every request that
-// hits the web server
-app.use(function (req, res, next) {
-    console.log("Connection made from: ", req.ip);
-    next();
-});
+
 
 module.exports = app;
 
