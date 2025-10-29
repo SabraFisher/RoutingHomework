@@ -12,7 +12,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -39,7 +39,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// create middleware that logs to the console the user's ip address with every request that
+ // create middleware that logs to the console the user's ip address with every request that
 // hits the web server
 app.use(function (req, res, next) {
     console.log("Connection made from: ", req.ip);
