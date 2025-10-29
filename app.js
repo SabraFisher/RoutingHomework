@@ -40,3 +40,10 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+// create middleware that logs to the console the user's ip address with every request that
+// hits the web server
+app.use(function (req, res, next) {
+    console.log("Connection made from: ", req.ip);
+    next();
+});
