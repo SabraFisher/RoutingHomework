@@ -15,31 +15,38 @@ router.get('/person', function (req, res, next) {
 });
 //GET /api/person/:id
 router.get('/person/:id', function (req, res, next) {
-    res.status(200);
-    res.send(data);
+    const id = Number(req.params.id);
+    const person = data.find(p => p.id === id);
+    if (!person) return res.status(404).json({ error: 'Person not found' });
+    res.status(200).json(person);
 });
 //POST /api/person
 router.post('/person', function (req, res, next) {
-    //adding any data sent to the endpoint to the array check this
-    res.status(200);
-    data.push(req.body);
-    res.send(req.body);
+    const person = req.body || {};
+    if (typeof person.id !== 'number') {
+        person.id = data.length ? Math.max(...data.map(p => p.id)) + 1 : 0;
+    }
+    data.push(person);
+    res.status(201).json(person);
 });
 // PUT /api/person/:id
 router.put('/person/:id', function (req, res, next) {
-    res.status(200); 
+    const id = Number(req.params.id);
+    const index = data.findIndex(person => person.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Person not found' });
 
-    var index = data.indexOf(person => {
-        return person.id === req.params.id;
-    });
-
-    data[index] = req.body;
-    res.send(data[inex]);
+    data[index] = Object.assign({}, req.body, { id });
+    res.status(200).json(data[index]);
 });
 
 // DELETE /api/person/:id
 router.delete('/person/:id', function (req, res, next) {
-    res.status(200);
-    data[index] = data.filter(person => person.id != req.params.id);
-    res.send(data[index]);
+    const id = Number(req.params.id);
+    const index = data.findIndex(person => person.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Person not found' });
+
+    const deleted = data.splice(index, 1)[0];
+    res.status(200).json(deleted);
 });
+
+module.exports = router;
