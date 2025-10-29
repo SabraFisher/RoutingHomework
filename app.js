@@ -39,11 +39,19 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
-
 // create middleware that logs to the console the user's ip address with every request that
 // hits the web server
 app.use(function (req, res, next) {
     console.log("Connection made from: ", req.ip);
     next();
 });
+
+module.exports = app;
+
+// Start server when running this file directly
+if (require.main === module) {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+  });
+}
