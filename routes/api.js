@@ -1,3 +1,6 @@
+var express = require('express');
+var router = express.Router();
+
 var data = [        // creating a sample data array JSON object
     { id: 0, name: "person1", username: "user1" },
     { id: 1, name: "person2", username: "user2" },
